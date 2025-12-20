@@ -1,0 +1,11 @@
+name: Production Update
+on:
+  push:
+    branches:
+      - main  # 當你 git push 到 main 時觸發
+jobs:
+  publish:
+    name: Publish Update
+    type: update
+    params:
+      branch: production
