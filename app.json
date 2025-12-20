@@ -3,6 +3,12 @@
     "name": "WorkCheckIn",
     "slug": "WorkCheckIn",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7221076c-a14c-4987-95af-0a483df6ff8c"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "workcheckin",
@@ -38,11 +44,24 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "此 App 需要存取您的相簿以選取商品照片進行海報印製。"
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7221076c-a14c-4987-95af-0a483df6ff8c"
+      }
+    },
+    "owner": "jacky183761"
   }
 }
