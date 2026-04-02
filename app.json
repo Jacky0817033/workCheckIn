@@ -4,7 +4,7 @@
     "slug": "WorkCheckIn",
     "version": "1.0.0",
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/7221076c-a14c-4987-95af-0a483df6ff8c"
