@@ -1,47 +1,86 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router'; // 引入跳轉功能
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+// 🚀 引入三個主要功能組件
+import EmployeeManager from '../../components/EmployeeManager';
+import LabelPrinter from '../../components/LabelPrinter';
+import PayrollService from '../../components/PayrollService'; // 這是下一個要建立的檔案
 
 export default function HomeScreen() {
+  // 狀態切換：'mgmt' (人員), 'payroll' (發薪), 'label' (標籤)
+  const [activeTab, setActiveTab] = useState<'mgmt' | 'payroll' | 'label'>('payroll');
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>我的上班小工具</Text>
+    <SafeAreaView style={styles.container}>
+      {/* 頂部切換選單 */}
+      <View style={styles.tabBarContainer}>
+        <TouchableOpacity
+          style={[styles.tabBtn, activeTab === 'mgmt' && styles.activeTabBtn]}
+          onPress={() => setActiveTab('mgmt')}
+        >
+          <Text style={[styles.tabText, activeTab === 'mgmt' && styles.activeTabText]}>人員管理</Text>
+        </TouchableOpacity>
 
-      <View style={styles.grid}>
-        {/* 使用 Link 元件來跳轉 */}
-        <Link href="/LabelPrinter" asChild>
-          <TouchableOpacity style={styles.card}>
-            <Ionicons name="barcode" size={40} color="#5856D6" />
-            <Text style={styles.cardText}>商品卡列印</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity
+          style={[styles.tabBtn, activeTab === 'payroll' && styles.activeTabBtn]}
+          onPress={() => setActiveTab('payroll')}
+        >
+          <Text style={[styles.tabText, activeTab === 'payroll' && styles.activeTabText]}>薪資發放</Text>
+        </TouchableOpacity>
 
-        {/* 這裡可以預留其他功能的按鈕 */}
-        <TouchableOpacity style={[styles.card, { opacity: 0.5 }]}>
-          <Ionicons name="location" size={40} color="#007AFF" />
-          <Text style={styles.cardText}>打卡系統(開發中)</Text>
+        <TouchableOpacity
+          style={[styles.tabBtn, activeTab === 'label' && styles.activeTabBtn]}
+          onPress={() => setActiveTab('label')}
+        >
+          <Text style={[styles.tabText, activeTab === 'label' && styles.activeTabText]}>標籤製作</Text>
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* 根據狀態顯示對應組件 */}
+      <View style={{ flex: 1 }}>
+        {activeTab === 'mgmt' && <EmployeeManager />}
+        {activeTab === 'payroll' && <PayrollService />}
+        {activeTab === 'label' && <LabelPrinter />}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F2F2F7', padding: 20, justifyContent: 'center' },
-  header: { fontSize: 28, fontWeight: 'bold', marginBottom: 30, textAlign: 'center' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' },
-  card: {
-    backgroundColor: '#fff',
-    width: '40%',
-    aspectRatio: 1,
-    borderRadius: 15,
-    justifyContent: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: '#F2F2F7', // iOS 系統背景色
+  },
+  tabBarContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#E5E5EA',
+    marginHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 12,
+    padding: 3,
+  },
+  tabBtn: {
+    flex: 1,
+    paddingVertical: 8,
     alignItems: 'center',
-    elevation: 3,
+    borderRadius: 10,
+  },
+  activeTabBtn: {
+    backgroundColor: '#FFFFFF',
+    // 增加陰影讓選中的按鈕有浮起感
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  cardText: { marginTop: 10, fontSize: 16, fontWeight: '500' },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#8E8E93',
+  },
+  activeTabText: {
+    color: '#007AFF', // 選中時的藍色
+  },
 });

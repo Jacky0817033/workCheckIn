@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity,
-  ScrollView, Alert, Image, KeyboardAvoidingView,
-  Platform, TouchableWithoutFeedback, Keyboard
+  Alert, Image,
+  Keyboard,
+  Platform,
+  StyleSheet, Text,
+  TextInput, TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
-import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
+// 🚀 引入專門處理鍵盤擋住畫面的組件
 import * as FileSystem from 'expo-file-system/legacy';
 import * as ImagePicker from 'expo-image-picker';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 interface LabelItem {
   name: string;
@@ -28,7 +34,6 @@ export default function LabelPrinter() {
     setItems(newItems);
   };
 
-  // 🚀 新增：刪除卡片功能
   const deleteItem = (index: number) => {
     if (items.length === 1) {
       Alert.alert("提醒", "至少需保留一張標籤內容");
@@ -167,14 +172,14 @@ export default function LabelPrinter() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.screen}
-    >
+    <View style={styles.screen}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ flex: 1 }}>
-          <ScrollView
+          {/* 🚀 關鍵：KeyboardAwareScrollView 會自動滾動到被點擊的輸入框 */}
+          <KeyboardAwareScrollView
             contentContainerStyle={styles.container}
+            enableOnAndroid={true}
+            extraScrollHeight={Platform.OS === 'ios' ? 100 : 50}
             keyboardShouldPersistTaps="handled"
           >
             <Text style={styles.header}>促銷標籤系統</Text>
@@ -197,7 +202,6 @@ export default function LabelPrinter() {
               <View key={index} style={styles.itemCard}>
                 <View style={styles.cardHeader}>
                   <Text style={styles.itemIndex}>標籤內容 #{index + 1}</Text>
-                  {/* 🚀 刪除按鈕 */}
                   <TouchableOpacity onPress={() => deleteItem(index)}>
                     <Text style={styles.deleteText}>刪除標籤</Text>
                   </TouchableOpacity>
@@ -274,7 +278,7 @@ export default function LabelPrinter() {
                 <TouchableOpacity style={styles.subButton} onPress={addNew}><Text style={styles.subButtonText}>+ 新增</Text></TouchableOpacity>
               </View>
             )}
-          </ScrollView>
+          </KeyboardAwareScrollView>
 
           <View style={styles.footer}>
             <TouchableOpacity style={styles.printButton} onPress={generatePDF}>
@@ -283,13 +287,13 @@ export default function LabelPrinter() {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#F2F2F7' },
-  container: { padding: 15, paddingBottom: 150 },
+  container: { padding: 15, paddingBottom: 50 }, // content 內部不需要太大的 padding，因為 footer 在外部
   header: { fontSize: 22, fontWeight: 'bold', marginTop: 40, textAlign: 'center', marginBottom: 20 },
   modeSelector: { flexDirection: 'row', justifyContent: 'center', gap: 12, marginBottom: 20 },
   modeBtn: { paddingVertical: 10, paddingHorizontal: 25, borderRadius: 25, borderWidth: 1.5, borderColor: '#007AFF', backgroundColor: '#fff' },
@@ -310,7 +314,7 @@ const styles = StyleSheet.create({
   shortcutRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 5 },
   tagBtn: { backgroundColor: '#E8F2FF', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 6, borderWidth: 1, borderColor: '#007AFF' },
   tagText: { color: '#007AFF', fontSize: 12, fontWeight: '600' },
-  buttonGroup: { flexDirection: 'row', justifyContent: 'space-between' },
+  buttonGroup: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
   subButton: { backgroundColor: '#fff', padding: 15, borderRadius: 10, width: '48%', alignItems: 'center', borderWidth: 1, borderColor: '#007AFF' },
   subButtonText: { color: '#007AFF', fontWeight: 'bold' },
   footer: { backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#D1D1D6', padding: 20, paddingBottom: Platform.OS === 'ios' ? 35 : 20 },
