@@ -485,7 +485,7 @@ function LaborEditModal({ employee, current, tiers, onClose }: {
 
     const restDayPay = useMemo(() =>
         calcRestDayPay(parseFloat(restDayDays || '0'), effectiveHourlyRate)
-    , [restDayDays, effectiveHourlyRate]);
+        , [restDayDays, effectiveHourlyRate]);
 
     const holidayPay = useMemo(() => {
         if (isHourly) {
@@ -1120,14 +1120,14 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
   .store { font-size: 8pt; color: #666; }
   .title { font-size: 11pt; font-weight: bold; letter-spacing: 1px; margin: 1mm 0; }
   .emp { font-size: 8pt; }
-  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; }
-  .col { flex: 1; overflow: hidden; }
+  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; min-height: 0; }
+  .col { flex: 1; overflow: hidden; min-height: 0; }
   .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 1mm; margin-bottom: 1.5mm; letter-spacing: 3px; font-size: 9pt; flex-shrink: 0; }
-  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 1mm 0; border-bottom: 1px dotted #ddd; }
+  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 0.8mm 0; border-bottom: 1px dotted #ddd; }
   .sub-total { font-weight: bold; border-bottom: 1px solid #999; background: #f8f8f8; }
-  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: auto; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
+  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: 2mm; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
   .amt { font-size: 15pt; color: #cc0000; }
-  .note { font-size: 7.5pt; color: #555; margin-top: 1.5mm; flex-shrink: 0; }
+  .note { font-size: 7.5pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
   .sign { font-size: 7pt; color: #888; text-align: right; margin-top: 2mm; }
 </style>
 </head><body>
@@ -1140,7 +1140,7 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
 // ─── Batch Internal PDF (multiple employees, 4 per A4 page) ──────────────────
 
 function buildBatchInternalPDF(
-    items: Array<{ employee: Employee; rec: PayrollData }>,
+    items: { employee: Employee; rec: PayrollData }[],
     yearMonth: string
 ): string {
     const label = formatYM(yearMonth);
@@ -1151,10 +1151,10 @@ function buildBatchInternalPDF(
     const buildSlip = (employee: Employee, rec: PayrollData, pos: string) => {
         const basePay =
             employee.type === 'hourly' ? rec.hours_worked * rec.base_salary :
-            employee.type === 'mixed' ? rec.base_salary + rec.extra_hours * rec.extra_hourly_rate :
-            rec.base_salary;
+                employee.type === 'mixed' ? rec.base_salary + rec.extra_hours * rec.extra_hourly_rate :
+                    rec.base_salary;
         const { bonus_growth, bonus_sqc, transport, rest_day_pay, holiday_pay,
-                labor, health, shortage, advance, manual_adjustment, note, total_pay } = rec;
+            labor, health, shortage, advance, manual_adjustment, note, total_pay } = rec;
 
         const basePayLines = () => {
             if (employee.type === 'hourly') {
@@ -1230,14 +1230,14 @@ function buildBatchInternalPDF(
   .store { font-size: 8pt; color: #666; }
   .title { font-size: 11pt; font-weight: bold; letter-spacing: 1px; margin: 1mm 0; }
   .emp { font-size: 8pt; }
-  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; }
-  .col { flex: 1; overflow: hidden; }
+  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; min-height: 0; }
+  .col { flex: 1; overflow: hidden; min-height: 0; }
   .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 1mm; margin-bottom: 1.5mm; letter-spacing: 3px; font-size: 9pt; flex-shrink: 0; }
-  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 1mm 0; border-bottom: 1px dotted #ddd; }
+  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 0.8mm 0; border-bottom: 1px dotted #ddd; }
   .sub-total { font-weight: bold; border-bottom: 1px solid #999; background: #f8f8f8; }
-  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: auto; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
+  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: 2mm; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
   .amt { font-size: 15pt; color: #cc0000; }
-  .note { font-size: 7.5pt; color: #555; margin-top: 1.5mm; flex-shrink: 0; }
+  .note { font-size: 7.5pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
   .sign { font-size: 7pt; color: #888; text-align: right; margin-top: 2mm; }`;
 
     return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${pages.join('')}</body></html>`;
@@ -1337,8 +1337,8 @@ function buildBatchExternalCSV(
 
         const earnedBase =
             emp.type === 'monthly' ? Math.round(rec.base_salary / 30) * rec.working_days :
-            emp.type === 'mixed' ? Math.round(rec.base_salary / 30) * rec.working_days + rec.extra_hours * rec.extra_hourly_rate :
-            rec.base_salary * rec.hours_worked;
+                emp.type === 'mixed' ? Math.round(rec.base_salary / 30) * rec.working_days + rec.extra_hours * rec.extra_hourly_rate :
+                    rec.base_salary * rec.hours_worked;
 
         const externalTotal = earnedBase
             + (rec.rest_day_pay || 0)
