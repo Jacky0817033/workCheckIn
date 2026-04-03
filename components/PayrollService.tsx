@@ -1111,24 +1111,24 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
   html, body { width: 210mm; height: 297mm; overflow: hidden; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
   .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; }
-  .slip { position: absolute; width: 105mm; height: 148.5mm; overflow: hidden; padding: 4mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
+  .slip { position: absolute; width: 105mm; height: 144mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
   .s1 { top: 0; left: 0; }
   .s2 { top: 0; left: 105mm; border-left: none; }
-  .s3 { top: 148.5mm; left: 0; border-top: 2px dashed #aaa; }
-  .s4 { top: 148.5mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
-  .hd { text-align: center; padding-bottom: 2mm; border-bottom: 1px solid #333; margin-bottom: 2mm; flex-shrink: 0; }
-  .store { font-size: 8pt; color: #666; }
-  .title { font-size: 11pt; font-weight: bold; letter-spacing: 1px; margin: 1mm 0; }
-  .emp { font-size: 8pt; }
-  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; min-height: 0; }
+  .s3 { top: 149mm; left: 0; border-top: 2px dashed #aaa; }
+  .s4 { top: 149mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
+  .hd { text-align: center; padding-bottom: 1.5mm; border-bottom: 1px solid #333; margin-bottom: 1.5mm; flex-shrink: 0; }
+  .store { font-size: 7pt; color: #666; }
+  .title { font-size: 10pt; font-weight: bold; letter-spacing: 1px; margin: 0.5mm 0; }
+  .emp { font-size: 7.5pt; }
+  .cols { display: flex; flex: 1; gap: 1.5mm; margin-top: 1.5mm; overflow: hidden; min-height: 0; }
   .col { flex: 1; overflow: hidden; min-height: 0; }
-  .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 1mm; margin-bottom: 1.5mm; letter-spacing: 3px; font-size: 9pt; flex-shrink: 0; }
-  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 0.8mm 0; border-bottom: 1px dotted #ddd; }
+  .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 0.8mm; margin-bottom: 1mm; letter-spacing: 2px; font-size: 8pt; flex-shrink: 0; }
+  .row { display: flex; justify-content: space-between; font-size: 7.5pt; padding: 0.5mm 0; border-bottom: 1px dotted #ddd; }
   .sub-total { font-weight: bold; border-bottom: 1px solid #999; background: #f8f8f8; }
-  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: 2mm; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
-  .amt { font-size: 15pt; color: #cc0000; }
-  .note { font-size: 7.5pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
-  .sign { font-size: 7pt; color: #888; text-align: right; margin-top: 2mm; }
+  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 1.5mm; margin-top: 1.5mm; font-weight: bold; font-size: 9pt; flex-shrink: 0; }
+  .amt { font-size: 13pt; color: #cc0000; }
+  .note { font-size: 7pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
+  .sign { font-size: 6.5pt; color: #888; text-align: right; margin-top: 1mm; }
 </style>
 </head><body>
 <div class="page">
@@ -1221,24 +1221,24 @@ function buildBatchInternalPDF(
   html, body { width: 210mm; overflow: hidden; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
   .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; page-break-after: always; break-after: page; }
-  .slip { position: absolute; width: 105mm; height: 148.5mm; overflow: hidden; padding: 4mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
+  .slip { position: absolute; width: 105mm; height: 144mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
   .s1 { top: 0; left: 0; }
   .s2 { top: 0; left: 105mm; border-left: none; }
-  .s3 { top: 148.5mm; left: 0; border-top: 2px dashed #aaa; }
-  .s4 { top: 148.5mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
-  .hd { text-align: center; padding-bottom: 2mm; border-bottom: 1px solid #333; margin-bottom: 2mm; flex-shrink: 0; }
-  .store { font-size: 8pt; color: #666; }
-  .title { font-size: 11pt; font-weight: bold; letter-spacing: 1px; margin: 1mm 0; }
-  .emp { font-size: 8pt; }
-  .cols { display: flex; flex: 1; gap: 2mm; margin-top: 2mm; overflow: hidden; min-height: 0; }
+  .s3 { top: 149mm; left: 0; border-top: 2px dashed #aaa; }
+  .s4 { top: 149mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
+  .hd { text-align: center; padding-bottom: 1.5mm; border-bottom: 1px solid #333; margin-bottom: 1.5mm; flex-shrink: 0; }
+  .store { font-size: 7pt; color: #666; }
+  .title { font-size: 10pt; font-weight: bold; letter-spacing: 1px; margin: 0.5mm 0; }
+  .emp { font-size: 7.5pt; }
+  .cols { display: flex; flex: 1; gap: 1.5mm; margin-top: 1.5mm; overflow: hidden; min-height: 0; }
   .col { flex: 1; overflow: hidden; min-height: 0; }
-  .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 1mm; margin-bottom: 1.5mm; letter-spacing: 3px; font-size: 9pt; flex-shrink: 0; }
-  .row { display: flex; justify-content: space-between; font-size: 8pt; padding: 0.8mm 0; border-bottom: 1px dotted #ddd; }
+  .col-hd { font-weight: bold; text-align: center; border-bottom: 1px solid #333; padding-bottom: 0.8mm; margin-bottom: 1mm; letter-spacing: 2px; font-size: 8pt; flex-shrink: 0; }
+  .row { display: flex; justify-content: space-between; font-size: 7.5pt; padding: 0.5mm 0; border-bottom: 1px dotted #ddd; }
   .sub-total { font-weight: bold; border-bottom: 1px solid #999; background: #f8f8f8; }
-  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 2mm; margin-top: 2mm; font-weight: bold; font-size: 10pt; flex-shrink: 0; }
-  .amt { font-size: 15pt; color: #cc0000; }
-  .note { font-size: 7.5pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
-  .sign { font-size: 7pt; color: #888; text-align: right; margin-top: 2mm; }`;
+  .total { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #333; padding-top: 1.5mm; margin-top: 1.5mm; font-weight: bold; font-size: 9pt; flex-shrink: 0; }
+  .amt { font-size: 13pt; color: #cc0000; }
+  .note { font-size: 7pt; color: #555; margin-top: 1mm; flex-shrink: 0; }
+  .sign { font-size: 6.5pt; color: #888; text-align: right; margin-top: 1mm; }`;
 
     return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${pages.join('')}</body></html>`;
 }
