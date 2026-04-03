@@ -1110,8 +1110,8 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 210mm; height: 297mm; overflow: hidden; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
-  .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; }
-  .slip { position: absolute; width: 105mm; height: 144mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
+  .page { position: relative; width: 210mm; height: 297mm; overflow: clip; contain: strict; }
+  .slip { position: absolute; width: 105mm; height: 144mm; overflow: clip; contain: strict; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
   .s1 { top: 0; left: 0; }
   .s2 { top: 0; left: 105mm; border-left: none; }
   .s3 { top: 149mm; left: 0; border-top: 2px dashed #aaa; }
