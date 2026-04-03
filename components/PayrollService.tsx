@@ -250,7 +250,7 @@ export default function PayrollService() {
             return;
         }
         const html = buildBatchInternalPDF(items, yearMonth);
-        const { uri } = await Print.printToFileAsync({ html, base64: false });
+        const { uri } = await Print.printToFileAsync({ html, base64: false, width: 595, height: 842 });
         await Sharing.shareAsync(uri);
     };
 
@@ -820,7 +820,7 @@ function PayrollDetailModal({ employee, yearMonth, existingRecord, tiers, onClos
             extraHours: parseFloat(extraHours || '0'),
             extraHourlyRate: parseFloat(extraHourlyRate || '0'),
         });
-        const { uri } = await Print.printToFileAsync({ html, base64: false });
+        const { uri } = await Print.printToFileAsync({ html, base64: false, width: 595, height: 842 });
         await Sharing.shareAsync(uri);
     };
 
@@ -1070,8 +1070,8 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
         return `<div class="row"><span>月薪</span><span>$${basePay.toLocaleString()}</span></div>`;
     };
 
-    const slip = (pos: string) => `
-    <div class="slip ${pos}">
+    const slip = () => `
+    <div class="slip">
       <div class="hd">
         <div class="store">${employee.store_name}</div>
         <div class="title">${label}　薪　資　明　細</div>
@@ -1108,14 +1108,13 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
 <style>
   @page { margin: 0; size: A4 portrait; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 210mm; height: 297mm; overflow: hidden; }
+  html, body { margin: 0; padding: 0; width: 210mm; height: 297mm; overflow: hidden; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
-  .page { position: relative; width: 210mm; height: 297mm; overflow: clip; contain: strict; }
-  .slip { position: absolute; width: 105mm; height: 144mm; overflow: clip; contain: strict; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
-  .s1 { top: 0; left: 0; }
-  .s2 { top: 0; left: 105mm; border-left: none; }
-  .s3 { top: 149mm; left: 0; border-top: 2px dashed #aaa; }
-  .s4 { top: 149mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
+  .page { width: 210mm; height: 297mm; display: flex; flex-wrap: wrap; overflow: hidden; }
+  .slip { width: 105mm; height: 148.5mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
+  .slip:nth-child(2) { border-left: none; }
+  .slip:nth-child(3) { border-top: 2px dashed #aaa; }
+  .slip:nth-child(4) { border-top: 2px dashed #aaa; border-left: none; }
   .hd { text-align: center; padding-bottom: 1.5mm; border-bottom: 1px solid #333; margin-bottom: 1.5mm; flex-shrink: 0; }
   .store { font-size: 7pt; color: #666; }
   .title { font-size: 10pt; font-weight: bold; letter-spacing: 1px; margin: 0.5mm 0; }
@@ -1132,7 +1131,7 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
 </style>
 </head><body>
 <div class="page">
-  ${slip('s1')}${slip('s2')}${slip('s3')}${slip('s4')}
+  ${slip()}${slip()}${slip()}${slip()}
 </div>
 </body></html>`;
 }
@@ -1148,7 +1147,7 @@ function buildBatchInternalPDF(
     const row = (name: string, val: number, minus = false) =>
         val > 0 ? `<div class="row"><span>${name}</span><span>${minus ? '-' : ''}$${val.toLocaleString()}</span></div>` : '';
 
-    const buildSlip = (employee: Employee, rec: PayrollData, pos: string) => {
+    const buildSlip = (employee: Employee, rec: PayrollData) => {
         const basePay =
             employee.type === 'hourly' ? rec.hours_worked * rec.base_salary :
                 employee.type === 'mixed' ? rec.base_salary + rec.extra_hours * rec.extra_hourly_rate :
@@ -1170,7 +1169,7 @@ function buildBatchInternalPDF(
         };
 
         return `
-    <div class="slip ${pos}">
+    <div class="slip">
       <div class="hd">
         <div class="store">${employee.store_name}</div>
         <div class="title">${label}　薪　資　明　細</div>
@@ -1203,15 +1202,14 @@ function buildBatchInternalPDF(
     </div>`;
     };
 
-    const positions = ['s1', 's2', 's3', 's4'];
-    const emptySlip = (pos: string) => `<div class="slip ${pos}" style="visibility:hidden"></div>`;
+    const emptySlip = () => `<div class="slip" style="visibility:hidden"></div>`;
 
     // Group into pages of 4
     const pages: string[] = [];
     for (let i = 0; i < items.length; i += 4) {
         const pageItems = items.slice(i, i + 4);
-        const slips = pageItems.map(({ employee, rec }, idx) => buildSlip(employee, rec, positions[idx]));
-        while (slips.length < 4) slips.push(emptySlip(positions[slips.length]));
+        const slips = pageItems.map(({ employee, rec }) => buildSlip(employee, rec));
+        while (slips.length < 4) slips.push(emptySlip());
         pages.push(`<div class="page">${slips.join('')}</div>`);
     }
 
@@ -1220,12 +1218,11 @@ function buildBatchInternalPDF(
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 210mm; overflow: hidden; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
-  .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; page-break-after: always; break-after: page; }
-  .slip { position: absolute; width: 105mm; height: 144mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
-  .s1 { top: 0; left: 0; }
-  .s2 { top: 0; left: 105mm; border-left: none; }
-  .s3 { top: 149mm; left: 0; border-top: 2px dashed #aaa; }
-  .s4 { top: 149mm; left: 105mm; border-top: 2px dashed #aaa; border-left: none; }
+  .page { width: 210mm; height: 297mm; display: flex; flex-wrap: wrap; overflow: hidden; page-break-after: always; break-after: page; }
+  .slip { width: 105mm; height: 148.5mm; overflow: hidden; padding: 3mm; box-sizing: border-box; border: 1px solid #444; display: flex; flex-direction: column; }
+  .slip:nth-child(2) { border-left: none; }
+  .slip:nth-child(3) { border-top: 2px dashed #aaa; }
+  .slip:nth-child(4) { border-top: 2px dashed #aaa; border-left: none; }
   .hd { text-align: center; padding-bottom: 1.5mm; border-bottom: 1px solid #333; margin-bottom: 1.5mm; flex-shrink: 0; }
   .store { font-size: 7pt; color: #666; }
   .title { font-size: 10pt; font-weight: bold; letter-spacing: 1px; margin: 0.5mm 0; }
