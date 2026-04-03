@@ -1112,12 +1112,13 @@ function buildInternalPDF(employee: Employee, yearMonth: string, data: {
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 105mm 105mm;
+    grid-template-rows: 148.5mm 148.5mm;
     width: 210mm;
     height: 297mm;
+    overflow: hidden;
   }
-  .slip { border: 1px solid #444; padding: 5mm; display: flex; flex-direction: column; overflow: hidden; }
+  .slip { border: 1px solid #444; padding: 4mm; display: flex; flex-direction: column; overflow: hidden; width: 105mm; height: 148.5mm; box-sizing: border-box; }
   .slip:nth-child(2) { border-left: none; }
   .slip:nth-child(3) { border-top: 2px dashed #aaa; }
   .slip:nth-child(4) { border-top: 2px dashed #aaa; border-left: none; }
@@ -1224,8 +1225,8 @@ function buildBatchInternalPDF(
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 210mm; }
   body { font-family: 'Heiti TC','PingFang TC','Microsoft JhengHei',sans-serif; font-size: 9pt; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 210mm; height: 297mm; page-break-after: always; }
-  .slip { border: 1px solid #444; padding: 5mm; display: flex; flex-direction: column; overflow: hidden; }
+  .grid { display: grid; grid-template-columns: 105mm 105mm; grid-template-rows: 148.5mm 148.5mm; width: 210mm; height: 297mm; overflow: hidden; page-break-after: always; break-after: page; }
+  .slip { border: 1px solid #444; padding: 4mm; display: flex; flex-direction: column; overflow: hidden; width: 105mm; height: 148.5mm; box-sizing: border-box; }
   .slip:nth-child(2) { border-left: none; }
   .slip:nth-child(3) { border-top: 2px dashed #aaa; }
   .slip:nth-child(4) { border-top: 2px dashed #aaa; border-left: none; }
